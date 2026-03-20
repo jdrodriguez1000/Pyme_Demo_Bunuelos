@@ -2,8 +2,8 @@ name: Daily Data Upload to Supabase
 
 on:
   schedule:
-    # Corre todos los días a las 05:00 UTC (aprox 12:00 AM COT/02:00 AM CLT dependiendo del horario)
-    - cron: '0 5 * * *'
+    # Corre todos los días a las 05:30 UTC
+    - cron: '30 5 * * *'
   workflow_dispatch: # Permite ejecución manual
 
 jobs:
