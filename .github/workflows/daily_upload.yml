@@ -2,7 +2,7 @@ name: Daily Data Upload to Supabase
 
 on:
   schedule:
-    # Corre todos los días a las 05:30 UTC
+    # Corre todos los días a las 05:30 UTC (aprox 12:30 AM COT / 02:30 AM CLT)
     - cron: '30 5 * * *'
   workflow_dispatch: # Permite ejecución manual
 
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
