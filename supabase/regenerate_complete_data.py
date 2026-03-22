@@ -413,6 +413,23 @@ def generate_ventas():
     print(f"Se han agregado {len(ventas_payload)} registros a 'usr_ventas' hasta {yesterday}")
 
 # --- GENERACIÓN DE PRODUCCIÓN ---
+def get_capacidad_max(año):
+    """Calcula la capacidad máxima según el año con crecimiento anual"""
+    base = 200
+
+    if año == 2021:
+        return base  # 200
+    elif año == 2022:
+        return int(base * 1.15)  # 230
+    elif año == 2023:
+        return int(base * 1.15 * 1.09)  # 251
+    elif año == 2024:
+        return int(base * 1.15 * 1.09)  # 251 (sin cambio 2023-2024)
+    elif año == 2025:
+        return int(base * 1.15 * 1.09 * 1.07)  # 269
+    else:  # 2026 en adelante
+        return int(base * 1.15 * 1.09 * 1.07 * 1.05)  # 282 (+5%)
+
 def generate_produccion():
     """Genera datos de producción diaria vinculada a ventas"""
     today = datetime.now().date()
@@ -453,7 +470,6 @@ def generate_produccion():
         diario = pd.DataFrame(columns=['fecha_dia', 'unidades_vendidas'])
 
     produccion_payload = []
-    capacidad_max = 200
 
     for _, row in diario.iterrows():
         # Aplicar incompletitud (registros faltantes)
@@ -461,6 +477,8 @@ def generate_produccion():
             continue
 
         venta_total = row['unidades_vendidas']
+        año = row['fecha_dia'].year
+        capacidad_max = get_capacidad_max(año)
         prod_estimada = int(min(capacidad_max, venta_total * 1.05))
         vendidas_reales = min(prod_estimada, venta_total)
         sobrantes = max(0, prod_estimada - venta_total)
